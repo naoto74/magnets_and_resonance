@@ -2,7 +2,7 @@ class Drawer{
 	constructor(canvas){
 		this.canvas = canvas;
 		this.ctx = canvas.getContext("2d");
-		this.scale = 500;
+		this.scale = 250;
 		this.origin = { x: 400, y: 400 };
 	}
 	clear(){
@@ -75,7 +75,7 @@ class Simulation{
 		this.rods = [];
 		this.attractors = [];
 		const Nj = 1;
-		const Ni = 2;
+		const Ni = numOfMagnetsvalue;
 		for(let j=0;j<Nj;j++){
 			for(let i=0;i<Ni;i++){
 				this.rods.push({
@@ -183,6 +183,7 @@ function plotDatas(datas, width, height) {
 	const canvas = document.createElement("canvas");
 	canvas.width = width;
 	canvas.height = height;
+	canvas.className = "outputcanvas";
 	graph.appendChild(canvas);
 
 	const ctx = canvas.getContext("2d");
@@ -247,6 +248,9 @@ function plotDatas(datas, width, height) {
 }
 let graph = document.getElementById("graph");
 
+let numOfMagnets = document.getElementById("numOfMagnets");
+let numOfMagnetsvalue = 2;
+
 let outputHz = document.getElementById("outputHz");
 let rangeHz = document.getElementById("rangeHz");
 let rangeHzvalue = 0;
@@ -265,31 +269,19 @@ function sumAbsDiff(datas) {
 let min = 0, max = 5;
 rangeHz.min = min;
 rangeHz.max = max;
-const plotdatas = [];
-for(let hz=min;hz<max;hz+=0.01){
-	simulation.setup();
-	rangeHzvalue = hz;
-	for(let i=0;i<1000;i++){
-		simulation.update();
-		simulation.rods[0].theta = Math.PI/180*20*Math.sin(simulation.frame/60*Math.PI*2 * rangeHzvalue);
-	}
-	let datas = [];
-	for(let i=0;i<300;i++){
-		simulation.update();
-		simulation.rods[0].theta = Math.PI/180*20*Math.sin(simulation.frame/60*Math.PI*2 * rangeHzvalue);
-		datas.push(simulation.rods[1].theta);
-	}
-	const sumdiff = sumAbsDiff(datas);
-	console.log(`hz = ${hz.toFixed(4)} sumdiff = ${sumdiff}`);
-	plotdatas.push({x: hz, y:sumdiff});
-}
-plotDatas(plotdatas, 800, 800);
 
+newgraph();
 function loop() {
 	drawer.clear();
 	if(rangeHzvalue != rangeHz.valueAsNumber){
 		rangeHzvalue = rangeHz.valueAsNumber;
 		outputHz.innerText = rangeHzvalue;
+		simulation.setup();
+	}
+	if(numOfMagnetsvalue != numOfMagnets.value){
+		numOfMagnetsvalue = Number(numOfMagnets.value);
+		simulation.setup();
+		newgraph();
 		simulation.setup();
 	}
 	drawer.drawPoints(simulation.attractors, "green");
@@ -299,4 +291,26 @@ function loop() {
 	requestAnimationFrame(loop);
 }
 
+function newgraph(){
+	document.querySelectorAll(".outputcanvas").forEach(e=>e.remove());
+	const plotdatas = [];
+	for(let hz=min;hz<max;hz+=0.01){
+		simulation.setup();
+		rangeHzvalue = hz;
+		for(let i=0;i<1000;i++){
+			simulation.update();
+			simulation.rods[0].theta = Math.PI/180*20*Math.sin(simulation.frame/60*Math.PI*2 * rangeHzvalue);
+		}
+		let datas = [];
+		for(let i=0;i<300;i++){
+			simulation.update();
+			simulation.rods[0].theta = Math.PI/180*20*Math.sin(simulation.frame/60*Math.PI*2 * rangeHzvalue);
+			datas.push(simulation.rods[numOfMagnetsvalue-1].theta);
+		}
+		const sumdiff = sumAbsDiff(datas);
+		// console.log(`hz = ${hz.toFixed(4)} sumdiff = ${sumdiff}`);
+		plotdatas.push({x: hz, y:sumdiff});
+	}
+	plotDatas(plotdatas, 800, 800);
+}
 loop();

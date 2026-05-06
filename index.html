@@ -49,8 +49,16 @@
 このときBはどれくらい振動するか。</p>
 <div id="graph">
 	<canvas width="800" height="800" id="canvas"></canvas>
-	<p><output id="outputHz"></output>Hz<br><input id="rangeHz" type="range" step="0.1" value="0"></p>
+	<p><output id="outputHz"></output>Hz<br><input id="rangeHz" type="range" step="0.01" value="0"></p>
 </div>
+<label for="numOfMagnets">磁石の個数:</label>
+<select name="numOfMagnets" id="numOfMagnets">
+  <option value="2">2個</option>
+  <option value="3">3個</option>
+  <option value="4">4個</option>
+  <option value="5">5個</option>
+  <option value="6">6個</option>
+</select>
 <h2>解説</h2>
 <p>
 磁石Aの向きが変わるとそれにつられて磁石Bも向きを変える方向に力が働きます。
