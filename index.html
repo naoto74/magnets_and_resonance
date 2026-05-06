@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>磁石と振動</title>
+	<style>
+		body{
+			user-select: none;
+			-webkit-user-select: none;
+		}
+		canvas{
+			border: 1px solid #000;
+			width: min(100%, 800px);
+		}
+		input[type=range] {
+			pointer-events: auto;
+            background: #5e5e5e;
+            height: 100%;
+			width: min(100%, 800px);
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            background: #f00;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+        }
+		#graph{
+			width: min(90vw, 850px);
+		}
+		#graph > *{
+			width: 100%;
+		}
+	</style>
+</head>
+<body>
+<h1>磁石同士の振動と共振現象</h1>
+<p>下のように磁石A, Bを横に並べて置き、Aをある一定の周波数で振動させる。<br>
+このときBはどれくらい振動するか。</p>
+<div id="graph">
+	<canvas width="800" height="800" id="canvas"></canvas>
+	<p><output id="outputHz"></output>Hz<br><input id="rangeHz" type="range" step="0.1" value="0"></p>
+</div>
+<h2>解説</h2>
+<p>
+磁石Aの向きが変わるとそれにつられて磁石Bも向きを変える方向に力が働きます。
+しかし磁石に質量があるため慣性が働き急に回転するわけではなくゆっくりと向きを変えていきます。
+<h3>周波数と磁石Bの振幅</h3>
+周波数が低い場合(0.5Hz)、磁石Bは磁石Aに追従するように運動をすることができます。<br>
+周波数が高い場合(3.5Hz)、磁石Aの振動についていけずその結果、振幅の小さな振動になります。<br>
+周波数が共振周波数(1.6Hz)の場合、磁石Bは振動と引き合う力のタイミングがそろい非常に大きな振動になります。
+</p>
+<script src="main.js"></script>
+</body>
+</html>
