@@ -14,6 +14,8 @@
 			width: min(100%, 800px);
 		}
 		input[type=range] {
+			-webkit-appearance: none;
+    		appearance: none;
 			pointer-events: auto;
             background: #5e5e5e;
             height: 100%;
@@ -26,6 +28,13 @@
             width: 20px;
             border-radius: 50%;
         }
+		input[type=range]::-moz-range-thumb {
+			background: #f00;
+			height: 20px;
+			width: 20px;
+			border-radius: 50%;
+			border: none;
+		}
 		#graph{
 			width: min(90vw, 850px);
 		}
